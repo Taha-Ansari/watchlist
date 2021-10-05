@@ -1,20 +1,38 @@
 <h1 class="text-center mb-3 mt-3">{{title}}</h1>
 <form action="/api/media" method="POST" class="mb-4">
     <div class="form-group">
-        <label for="name">Title</label>
-        <input type="text" name="title" class="form-control">
+        <label for="title">Title</label>
+        <input required type="text" name="title" class="form-control">
     </div>
     <div class="form-group">
-        <label for="name">Category</label>
-        <input type="text" name="category" class="form-control">
+        <label for="category">Category</label>
+        {{!-- <input type="text" name="category" class="form-control"> --}}
+        <select name="category" class="form-control" required>
+            <option value="" hidden selected disabled>Select category</option>
+            <option value="Movie">Movie</option>
+            <option value="K-Drama">K-drama</option>
+            <option value="TV Show">TV Show</option>
+            <option value="Documentary">Documentary</option>
+            <option value="Anime">Anime</option>
+            <option value="Cartoon">Cartoon</option>
+        </select>
     </div>
     <input type="submit" value="Add Media" class="btn btn-primary btn-block mt-4">
 </form>
 
-<h4>Media Database</h4>
-<ul class="list-group">
-    {{#each media}}
-    <li class="list-group-item">{{this.category}}: {{this.title}}</li>
-    {{/each}}
-</ul>
+<form action="/api/media/delete" method="get" class="mb-4">
+    <h4>Watchlist</h4>
+    <div class="form-group">
+        <ul class="list-group">
+            {{#each media}}
+            <li class="list-group-item">{{this.category}}: {{this.title}}<button type="submit" name="id" value="{{this.id}}"
+                    class="btn float-end btn-danger btn-small"><i class="fa-solid fa-trash"></i></button></li>
 
+            {{/each}}
+        </ul>
+    </div>
+</form>
+
+<form action="/api/media/random" method="GET" class="mb-4">
+    <input type="submit" value="Suggest Random" class="btn btn-block btn-success" />
+</form>

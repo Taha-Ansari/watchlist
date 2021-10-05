@@ -9,6 +9,28 @@ router.get("/", (req, res) => {
   res.json(media);
 });
 
+router.get("/random", (req, res) => {
+  let randIndex = Math.floor(Math.random() * media.length);
+  res.send(`<p>alert('${media[randIndex].title}');</p>`);
+});
+
+// Delete Media
+router.get("/delete", (req, res) => {
+  console.log("delete triggered", req.query.id);
+  const found = media.some((media) => media.id === req.query.id);
+  if (found) {
+    for (let i = 0; i < media.length; i++) {
+      if (media[i].id === req.query.id) {
+        media.splice(i, 1);
+        break;
+      }
+    }
+    res.redirect("/");
+  } else {
+    res.status(400).json({ msg: `No member with the ID of ${req.params.id}` });
+  }
+});
+
 // Returns a single media file by ID
 router.get("/:id", (req, res) => {
   const found = media.some((media) => media.id === parseInt(req.params.id));
@@ -26,7 +48,7 @@ router.post("/", (req, res) => {
     title: req.body.title,
     category: req.body.category,
   };
-  console.log(newMedia.title, newMedia.category);
+  // console.log(newMedia.title, newMedia.category);
   if (!newMedia.title || !newMedia.category) {
     return res.status(400).json({ msg: "Please include a title and category" });
   }
@@ -47,16 +69,6 @@ router.put("/:id", (req, res) => {
         res.json({ msg: "Media updated ", media });
       }
     });
-  } else {
-    res.status(400).json({ msg: `No member with the ID of ${req.params.id}` });
-  }
-});
-
-// Delete Media
-router.delete("/:id", (req, res) => {
-  const found = media.some((media) => media.id === parseInt(req.params.id));
-  if (found) {
-    res.json({ msg: "Media deleted", media: media.filter((media) => media.id !== parseInt(req.params.id)) });
   } else {
     res.status(400).json({ msg: `No member with the ID of ${req.params.id}` });
   }
