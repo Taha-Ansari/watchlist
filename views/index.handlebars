@@ -6,7 +6,6 @@
     </div>
     <div class="form-group">
         <label for="category">Category</label>
-        {{!-- <input type="text" name="category" class="form-control"> --}}
         <select name="category" class="form-control" required>
             <option value="" hidden selected disabled>Select category</option>
             <option value="Movie">Movie</option>
@@ -23,16 +22,61 @@
 <form action="/api/media/delete" method="get" class="mb-4">
     <h4>Watchlist</h4>
     <div class="form-group">
-        <ul class="list-group">
+        <ul id="medialist" class="list-group">
             {{#each media}}
-            <li class="list-group-item">{{this.category}}: {{this.title}}<button type="submit" name="id" value="{{this.id}}"
-                    class="btn float-end btn-danger btn-small"><i class="fa-solid fa-trash"></i></button></li>
-
+            <li class="list-group-item">{{this.category}}: {{this.title}}<button type="submit" name="id"
+                    value="{{this.id}}" class="btn float-end btn-danger btn-small"><i
+                        class="fa-solid fa-trash"></i></button></li>
             {{/each}}
         </ul>
     </div>
 </form>
 
-<form action="/api/media/random" method="GET" class="mb-4">
-    <input type="submit" value="Suggest Random" class="btn btn-block btn-success" />
-</form>
+{{!-- Modal Trigger --}}
+<input type="submit" onClick="random()" value="Suggest Random" class="btn btn-block btn-success" data-bs-toggle="modal"
+    data-bs-target="#basicModal" />
+
+<!-- Modal -->
+<div class="modal fade" id="basicModal" tabindex="-1" aria-labelledby="basicModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="basicModalLabel">Suggestion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <h4 id="watch_suggestion"></h4>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var myModal = new bootstrap.Modal(document.getElementById('basicModal'))
+
+    function random() {
+        // Grabbing list of movies from the DOM tree
+        let medialist = document.getElementById("medialist").innerHTML.split("\n");
+        let temp = [];
+        for (let i of medialist) {
+            i && temp.push(i); // copy each non-empty value to the 'temp' array
+        }
+        medialist = temp;
+
+        // check to see if list is empty (>1 because there's always empty at index 0 in DOM)
+        if (medialist.length > 1) {
+            let len = medialist.length - 1; // minus 1 because last thing in array will always be empty
+            let randomIndex = Math.floor(Math.random() * len);
+            let selection = medialist[randomIndex].split('>')[1].split('<')[0]
+            document.getElementById('basicModalLabel').innerText = "Suggestion";
+            document.getElementById('watch_suggestion').innerText = selection;
+        }
+        else {
+           document.getElementById('basicModalLabel').innerText = "Oops ..."; 
+           document.getElementById('watch_suggestion').innerText = "Looks like you haven't added anything to the watchlist!"
+        }
+    }
+
+</script>

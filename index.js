@@ -10,8 +10,9 @@ const app = express();
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
+// Render index HTML view
 app.get("/", (req, res) => res.render("index", {
-  title: "Media Tracker",
+  title: "Watchlist Tracker",
   media,
 }));
 

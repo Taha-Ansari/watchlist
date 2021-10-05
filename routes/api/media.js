@@ -9,14 +9,9 @@ router.get("/", (req, res) => {
   res.json(media);
 });
 
-router.get("/random", (req, res) => {
-  let randIndex = Math.floor(Math.random() * media.length);
-  res.send(`<p>alert('${media[randIndex].title}');</p>`);
-});
-
 // Delete Media
 router.get("/delete", (req, res) => {
-  console.log("delete triggered", req.query.id);
+  // console.log("delete triggered", req.query.id);
   const found = media.some((media) => media.id === req.query.id);
   if (found) {
     for (let i = 0; i < media.length; i++) {
