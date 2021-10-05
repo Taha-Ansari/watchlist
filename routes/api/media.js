@@ -1,6 +1,6 @@
 const express = require("express");
 const uuid = require("uuid");
-const media = require("../../Media");
+const media = require("../../data/Media");
 
 const router = express.Router();
 

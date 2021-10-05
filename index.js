@@ -1,6 +1,6 @@
 const express = require("express");
 const exphbs = require("express-handlebars");
-const media = require("./Media");
+const media = require("./data/Media");
 
 const PORT = process.env.PORT || 5000;
 

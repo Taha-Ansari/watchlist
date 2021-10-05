@@ -1,6 +1,6 @@
 const media = [
   {
-    id: "hehe",
+    id: "initial_id",
     title: "A New Hope",
     category: "Movie",
   },
